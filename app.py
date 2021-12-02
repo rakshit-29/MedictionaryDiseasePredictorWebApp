@@ -1,21 +1,25 @@
+import base64
+from io import BytesIO
+
 import streamlit as st
 import os
 import streamlit.components.v1 as stc
-# EDA Pkgs
+
+
 import pandas as pd
 import numpy as np
 
-import io
+
 import plotly.express as px
 
-# Data Viz Pkgs
+
 import matplotlib
 
 matplotlib.use('Agg')  # To Prevent Errors
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ML Pkgs
+
 from sklearn import model_selection
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -133,6 +137,24 @@ def main():
             plt.xlabel('prognosis', fontsize=15)
             plt.ylabel('count', fontsize=15)
             st.pyplot()
+
+        def to_excel(df):
+            output = BytesIO()
+            writer = pd.ExcelWriter(output, engine='xlsxwriter')
+            df.to_excel(writer, sheet_name='Sheet1')
+            writer.save()
+            processed_data = output.getvalue()
+            return processed_data
+
+        def get_table_download_link(df):
+            val = to_excel(df)
+            b64 = base64.b64encode(val)  # val looks like b'...'
+            return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="csv_disease.xlsx">Download Disease CSV file</a>'
+
+        if st.button("Download link for Disease Prediction CSV File"):
+            st.markdown(get_table_download_link(df), unsafe_allow_html=True)
+
+
 
     if choice == "Predictor Tool":
         st.subheader("Predictor Tool")
