@@ -55,7 +55,7 @@ def main():
         st.markdown('**int64** and **object**')
 
     if st.button("Value Counts"):
-        st.text("Value Counts By Target/Class")
+        st.text("Value Counts By Class")
         st.write(df.iloc[:, -1].value_counts())
 
     st.subheader("Data Visualization")
