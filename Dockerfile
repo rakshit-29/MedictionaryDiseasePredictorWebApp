@@ -7,9 +7,9 @@ COPY requirements.txt ./requirements.txt
 
 RUN pip3 install -r requirements.txt
 
-EXPOSE 2929
+EXPOSE 8080
 
 COPY . /app
 
 
-CMD streamlit run --server.port 2929 --server.enableCORS false app.py
+CMD streamlit run --server.port 8080 --server.enableCORS false app.py
